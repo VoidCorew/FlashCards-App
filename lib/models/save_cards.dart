@@ -5,37 +5,41 @@ part 'save_cards.g.dart';
 @HiveType(typeId: 0)
 class SaveCards {
   @HiveField(0)
-  final String word;
+  final String id;
 
   @HiveField(1)
-  final String reading;
+  final String word;
 
   @HiveField(2)
-  final String translation;
+  final String reading;
 
   @HiveField(3)
-  final String? imagePath;
+  final String translation;
 
   @HiveField(4)
-  final String? article;
+  final String? imagePath;
 
   @HiveField(5)
-  final String? flag;
+  final String? article;
 
   @HiveField(6)
-  final int? articleColor;
+  final String? flag;
 
   @HiveField(7)
+  final int? articleColor;
+
+  @HiveField(8)
   final int? cardBackgroundColor;
 
-  SaveCards(
-    this.word,
-    this.reading,
-    this.translation,
+  SaveCards({
+    required this.id,
+    required this.word,
+    required this.reading,
+    required this.translation,
     this.imagePath,
     this.article,
     this.flag,
     this.articleColor,
     this.cardBackgroundColor,
-  );
+  });
 }

@@ -279,3 +279,65 @@ old appbar picker
   //   });
   // }
 ```
+
+old settings
+```dart
+// return Scaffold(
+    //   appBar: AppBar(
+    //     title: const Text('Настройки', style: TextStyle(fontFamily: 'wdxl')),
+    //   ),
+    //   body: ListView(
+    //     padding: const EdgeInsets.all(16),
+    //     children: [
+    //       const Text(
+    //         'Основные',
+    //         style: TextStyle(fontFamily: 'wdxl', fontSize: 20),
+    //       ),
+
+    //       // Theme selection dropdown
+    //       ListTile(
+    //         leading: const Icon(Icons.palette),
+    //         title: const Text('Тема приложения'),
+    //         subtitle: DropdownButton<AppThemeMode>(
+    //           value: settings.themeMode,
+    //           items: AppThemeMode.values.map((mode) {
+    //             return DropdownMenuItem(
+    //               value: mode,
+    //               child: Text(themeLabel(mode)),
+    //             );
+    //           }).toList(),
+    //           onChanged: (mode) {
+    //             if (mode != null) provider.setThemeMode(mode);
+    //           },
+    //         ),
+    //       ),
+
+    //       // Wallpaper picker
+    //       ListTile(
+    //         leading: const Icon(Icons.photo_library),
+    //         title: const Text('Фон приложения'),
+    //         subtitle: Text(
+    //           settings.wallpaperPath != null ? 'Выбран файл' : 'Нет фона',
+    //         ),
+    //         trailing: Row(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             IconButton(
+    //               icon: const Icon(Icons.folder_open),
+    //               onPressed: () => _pickImage(provider),
+    //             ),
+    //             if (settings.wallpaperPath != null)
+    //               IconButton(
+    //                 icon: const Icon(Icons.refresh),
+    //                 onPressed: () {
+    //                   provider.resetWallpaper();
+    //                   setState(() => _localImage = null);
+    //                 },
+    //               ),
+    //           ],
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
+```

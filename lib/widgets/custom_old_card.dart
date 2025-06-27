@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:card_learn_languages/models/learning_card.dart';
 import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:card_learn_languages/screens/home/cards/create_edit_card.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,10 @@ class CustomOldCard extends StatelessWidget {
 
                         Row(
                           children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(FluentIcons.add_24_filled),
+                            ),
                             IconButton(
                               onPressed: () async {
                                 final updatedCard = await Navigator.push(

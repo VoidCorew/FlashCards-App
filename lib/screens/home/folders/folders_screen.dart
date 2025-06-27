@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -15,17 +16,20 @@ class FoldersScreen extends StatelessWidget {
         children: [
           SpeedDialChild(
             elevation: 0,
-            child: Icon(Icons.ad_units),
+            child: Icon(FluentIcons.card_ui_24_regular),
             labelWidget: Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: const Text('Hello'),
+              padding: const EdgeInsets.only(right: 10.0),
+              child: const Text('Добавить карточку'),
             ),
             onTap: () {},
           ),
           SpeedDialChild(
             elevation: 0,
-            child: Icon(Icons.ad_units),
-            labelWidget: const Text('Hello'),
+            child: Icon(Icons.folder),
+            labelWidget: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: const Text('Создать папку'),
+            ),
             onTap: () {},
           ),
         ],

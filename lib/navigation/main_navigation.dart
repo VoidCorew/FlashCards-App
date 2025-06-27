@@ -41,41 +41,6 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     final currentTheme = context.watch<AppTheme>();
-    // final isDarkTheme =
-    //     (mode == ThemeMode.dark) ||
-    //     (mode == ThemeMode.system &&
-    //         Theme.of(context).brightness == Brightness.dark);
-
-    // final destinations = const [
-    //   NavigationDestination(
-    //     selectedIcon: Icon(Icons.home_rounded),
-    //     icon: Icon(Icons.home_outlined),
-    //     label: 'Home',
-    //   ),
-    //   NavigationDestination(
-    //     selectedIcon: Icon(
-    //       Icons.quiz,
-    //       // color: currentTheme.isDark ? null : Colors.white,
-    //     ),
-    //     icon: Icon(Icons.quiz_outlined),
-    //     label: 'Quiz',
-    //   ),
-    // ];
-
-    // final List<List<Widget>> _actions = [
-    //   [
-    //     IconButton(
-    //       onPressed: () {
-    //         Navigator.push(
-    //           context,
-    //           MaterialPageRoute(builder: (context) => SettingsScreen()),
-    //         );
-    //       },
-    //       icon: Icon(Icons.settings),
-    //     ),
-    //   ],
-    //   [],
-    // ];
 
     final List<Widget> actions = currentScreenIndex == 0
         ? [
@@ -104,27 +69,6 @@ class _MainNavigationState extends State<MainNavigation> {
               )
             : null,
       ),
-      // body: screens[currentScreenIndex],
-      // body: currentScreenIndex == 0
-      //     ? DefaultTabController(
-      //         length: 2,
-      //         child: Column(
-      //           children: [
-      //             TabBar(
-      //               tabs: [
-      //                 Tab(text: 'Слова'),
-      //                 Tab(text: 'Папки'),
-      //               ],
-      //             ),
-      //             Expanded(
-      //               child: TabBarView(
-      //                 children: [HomeScreen(), FoldersScreen()],
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       )
-      //     : QuizSelectionScreen(),
       body: currentScreenIndex == 0
           ? HomeTabBarScreen()
           : QuizSelectionScreen(),

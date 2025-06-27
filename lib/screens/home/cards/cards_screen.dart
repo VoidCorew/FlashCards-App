@@ -32,30 +32,29 @@ class _CardsScreenState extends State<CardsScreen> {
     final cards = cardProvider.cards;
 
     return Scaffold(
-      body: Container(
-        decoration: appProvider.wallpaperPath != null
-            ? BoxDecoration(
-                image: DecorationImage(
-                  image: FileImage(File(appProvider.wallpaperPath!)),
-                  fit: BoxFit.cover,
-                ),
-              )
-            : null,
-        child: cards.isEmpty
-            ? Center(
-                child: const Text(
-                  'У вас пока нет карточек',
-                  style: TextStyle(fontFamily: 'wdxl'),
-                ),
-              )
-            : ListView.builder(
-                padding: EdgeInsets.all(16.0),
-                itemCount: cards.length,
-                itemBuilder: (context, index) {
-                  final card = cards[index];
-                  return CustomOldCard(card: card, index: index);
-                },
-              ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (appProvider.wallpaperPath != null)
+            Image.file(File(appProvider.wallpaperPath!), fit: BoxFit.cover),
+          SafeArea(
+            child: cards.isEmpty
+                ? Center(
+                    child: const Text(
+                      'У вас пока нет карточек',
+                      style: TextStyle(fontFamily: 'wdxl'),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.all(16.0),
+                    itemCount: cards.length,
+                    itemBuilder: (context, index) {
+                      final card = cards[index];
+                      return CustomOldCard(card: card, index: index);
+                    },
+                  ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

@@ -17,36 +17,39 @@ class SaveCardsAdapter extends TypeAdapter<SaveCards> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SaveCards(
-      fields[0] as String,
-      fields[1] as String,
-      fields[2] as String,
-      fields[3] as String?,
-      fields[4] as String?,
-      fields[5] as String?,
-      fields[6] as int?,
-      fields[7] as int?,
+      id: fields[0] as String,
+      word: fields[1] as String,
+      reading: fields[2] as String,
+      translation: fields[3] as String,
+      imagePath: fields[4] as String?,
+      article: fields[5] as String?,
+      flag: fields[6] as String?,
+      articleColor: fields[7] as int?,
+      cardBackgroundColor: fields[8] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SaveCards obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
-      ..write(obj.word)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.reading)
+      ..write(obj.word)
       ..writeByte(2)
-      ..write(obj.translation)
+      ..write(obj.reading)
       ..writeByte(3)
-      ..write(obj.imagePath)
+      ..write(obj.translation)
       ..writeByte(4)
-      ..write(obj.article)
+      ..write(obj.imagePath)
       ..writeByte(5)
-      ..write(obj.flag)
+      ..write(obj.article)
       ..writeByte(6)
-      ..write(obj.articleColor)
+      ..write(obj.flag)
       ..writeByte(7)
+      ..write(obj.articleColor)
+      ..writeByte(8)
       ..write(obj.cardBackgroundColor);
   }
 
