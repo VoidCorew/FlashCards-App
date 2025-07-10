@@ -4,49 +4,84 @@ import 'package:hive/hive.dart';
 
 class AppProvider extends ChangeNotifier {
   static const String _boxName = 'app_settings';
-  // late Box<AppSettings> _box;
-  // late AppSettings _settings;
-  Box<AppSettings>? _box;
-  AppSettings? _settings;
+  static const String _settingsKey = 'settings';
 
-  AppSettings get settings => _settings ?? AppSettings();
-  String? get wallpaperPath => _settings?.wallpaperPath;
+  late Box<AppSettings> _box;
+  late AppSettings _settings;
+
+  bool _isInitialized = false;
+  bool get isInitialized => _isInitialized;
+
+  // AppSettings get settings => _settings ?? AppSettings();
+  // String? get wallpaperPath => _settings?.wallpaperPath;
+
+  AppProvider() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    _box = Hive.box<AppSettings>(_boxName);
+    final existing = _box.get(_settingsKey);
+
+    if (existing == null) {
+      _settings = AppSettings();
+      _box.put(_settingsKey, _settings);
+    } else {
+      _settings = existing;
+    }
+
+    // if (_box.isEmpty) {
+    //   _settings = AppSettings();
+    //   // await _box!.put('settings', _settings!);
+    //   await _box.put(_settingsKey, _settings);
+    // } else {
+    //   _settings = _box.get(_settingsKey)!;
+    // }
+
+    _isInitialized = true;
+    notifyListeners();
+  }
+
+  AppSettings get settings => _settings;
+  String? get wallpaperPath => _settings.wallpaperPath;
+
   ThemeMode get themeMode {
-    switch (_settings?.themeMode) {
+    switch (_settings.themeMode) {
       case AppThemeMode.dark:
         return ThemeMode.dark;
       case AppThemeMode.light:
         return ThemeMode.light;
       case AppThemeMode.auto:
-        return ThemeMode.system;
       default:
         return ThemeMode.system;
     }
   }
 
-  Future<void> init() async {
-    Hive.registerAdapter(AppThemeModeAdapter());
-    Hive.registerAdapter(AppSettingsAdapter());
-    _box = await Hive.openBox<AppSettings>(_boxName);
-    if (_box!.isEmpty) {
-      _settings = AppSettings();
-      await _box!.put('settings', _settings!);
-    } else {
-      _settings = _box!.get('settings')!;
-    }
-  }
-
   Future<void> setWallpaper(String? path) async {
-    _settings!.wallpaperPath = path;
-    await _settings!.save();
+    _settings.wallpaperPath = path;
+    await _settings.save();
     notifyListeners();
   }
 
-  Future<void> resetWallpaper() => setWallpaper(null);
+  Future<void> resetWallpaper() async {
+    await setWallpaper(null);
+  }
 
   Future<void> setThemeMode(AppThemeMode mode) async {
-    _settings!.themeMode = mode;
-    await _settings!.save();
+    _settings.themeMode = mode;
+    await _settings.save();
+    notifyListeners();
+  }
+
+  bool get isDark => _settings.themeMode == AppThemeMode.dark;
+
+  Future<void> toggleTheme() async {
+    if (_settings.themeMode == AppThemeMode.dark) {
+      _settings.themeMode = AppThemeMode.light;
+    } else {
+      _settings.themeMode = AppThemeMode.dark;
+    }
+    await _settings.save();
     notifyListeners();
   }
 }

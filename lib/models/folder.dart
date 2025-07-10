@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
 
+part 'folder.g.dart';
+
 @HiveType(typeId: 1)
-class Folder {
+class Folder extends HiveObject {
   @HiveField(0)
   final String id;
 
@@ -9,8 +11,13 @@ class Folder {
   String name;
 
   @HiveField(2)
-  final List<String> cardsIds;
+  List<String> cardsIds;
 
-  Folder({required this.id, required this.name, List<String>? cardIds})
-    : cardsIds = cardIds ?? [];
+  Folder({required this.id, required this.name, List<String>? cardsIds})
+    : cardsIds = cardsIds ?? [];
+
+  void addCard(String cardId) {
+    cardsIds.add(cardId);
+    save();
+  }
 }

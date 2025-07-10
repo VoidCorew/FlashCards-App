@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'save_theme.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 enum AppThemeMode {
   @HiveField(0)
   auto,
@@ -12,7 +12,7 @@ enum AppThemeMode {
   light,
 }
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 3)
 class AppSettings extends HiveObject {
   @HiveField(0)
   String? wallpaperPath;

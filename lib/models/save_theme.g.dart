@@ -8,7 +8,7 @@ part of 'save_theme.dart';
 
 class AppSettingsAdapter extends TypeAdapter<AppSettings> {
   @override
-  final int typeId = 1;
+  final int typeId = 3;
 
   @override
   AppSettings read(BinaryReader reader) {
@@ -45,7 +45,7 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
 
 class AppThemeModeAdapter extends TypeAdapter<AppThemeMode> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
   AppThemeMode read(BinaryReader reader) {

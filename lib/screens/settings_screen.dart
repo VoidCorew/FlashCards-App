@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:card_learn_languages/models/save_theme.dart';
 import 'package:card_learn_languages/providers/app_provider.dart';
 import 'package:card_learn_languages/providers/app_theme.dart';
+import 'package:card_learn_languages/providers/card_provider.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -49,24 +51,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String themeLabel(AppThemeMode mode) {
     switch (mode) {
       case AppThemeMode.auto:
-        return 'Auto';
+        return 'Системная';
       case AppThemeMode.dark:
-        return 'Dark';
+        return 'Темная';
       case AppThemeMode.light:
-        return 'Light';
+        return 'Светлая';
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentTheme = context.watch<AppTheme>();
+    final appProvider = context.watch<AppProvider>();
+    final cardProvider = context.watch<CardProvider>();
     final provider = context.watch<AppProvider>();
-    final settings = provider.settings;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Настройки', style: TextStyle(fontFamily: 'wdxl')),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Настройки', style: TextStyle(fontFamily: 'wdxl')),
+      // ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -80,41 +82,139 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
 
+          // ListTile(
+          //   // leading: const Icon(Icons.wb_sunny),
+          //   // trailing: IconButton(
+          //   //   onPressed: () => context.read<AppTheme>().toggleTheme(),
+          //   //   // icon: Icon(
+          //   //   //   currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
+          //   //   // ),
+          //   //   icon: Icon(
+          //   //     currentTheme.isDark
+          //   //         ? FluentIcons.weather_sunny_24_regular
+          //   //         : FluentIcons.weather_moon_24_regular,
+          //   //   ),
+          //   // ),
+          //   // trailing: DropdownButton<AppThemeMode>(
+          //   //   value: provider.settings.themeMode,
+          //   //   items: AppThemeMode.values.map((mode) {
+          //   //     return DropdownMenuItem<AppThemeMode>(
+          //   //       value: mode,
+          //   //       child: Text(themeLabel(mode)),
+          //   //     );
+          //   //   }).toList(),
+          //   //   onChanged: (AppThemeMode? newMode) {
+          //   //     if (newMode != null) {
+          //   //       provider.setThemeMode(newMode);
+          //   //     }
+          //   //   },
+          //   // ),
+          //   trailing: DropdownMenu<AppThemeMode>(
+          //     initialSelection: provider.settings.themeMode,
+          //     dropdownMenuEntries: AppThemeMode.values.map((mode) {
+          //       return DropdownMenuEntry<AppThemeMode>(
+          //         value: mode,
+          //         label: themeLabel(mode),
+          //         // labelWidget: Text(
+          //         //   themeLabel(mode),
+          //         //   style: TextStyle(fontFamily: 'wdxl'),
+          //         // ),
+          //       );
+          //     }).toList(),
+          //     onSelected: (AppThemeMode? newMode) {
+          //       if (newMode != null) {
+          //         provider.setThemeMode(newMode);
+          //       }
+          //     },
+          //   ),
+          //   title: const Text(
+          //     'Тема приложения',
+          //     style: TextStyle(fontFamily: 'wdxl'),
+          //   ),
+          //   subtitle: const Text(
+          //     'Выбрать тему приложения',
+          //     style: TextStyle(fontFamily: 'wdxl'),
+          //   ),
+          // ),
           ListTile(
-            leading: const Icon(Icons.wb_sunny),
+            // leading: const Icon(Icons.photo_library),
             trailing: IconButton(
-              onPressed: () => context.read<AppTheme>().toggleTheme(),
-              icon: Icon(
-                currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
-              ),
+              onPressed: () => _pickImage(appProvider),
+              icon: Icon(FluentIcons.folder_open_24_regular),
             ),
-            title: const Text('Тема приложения'),
-            subtitle: const Text('Выбрать тему приложения'),
+            title: const Text(
+              'Выбрать фон',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
+            subtitle: const Text(
+              'Выбрать фон приложения',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
           ),
 
           ListTile(
-            leading: const Icon(Icons.photo_library),
+            // leading: const Icon(Icons.photo_library),
             trailing: IconButton(
-              onPressed: () => _pickImage(provider),
-              icon: Icon(Icons.folder_copy),
+              onPressed: () => appProvider.resetWallpaper(),
+              icon: Icon(FluentIcons.arrow_redo_24_regular),
             ),
-            title: const Text('Выбрать фон'),
-            subtitle: const Text('Выбрать фон приложения'),
-          ),
-
-          ListTile(
-            leading: const Icon(Icons.photo_library),
-            trailing: IconButton(
-              onPressed: () => resetWallpaper(provider),
-              icon: Icon(Icons.refresh),
+            title: const Text(
+              'Сбросить фон',
+              style: TextStyle(fontFamily: 'wdxl'),
             ),
-            title: const Text('Сбросить фон'),
-            subtitle: const Text('Сбросить фон приложения'),
+            subtitle: const Text(
+              'Сбросить фон приложения',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
           ),
 
           const Divider(),
 
-          Column(),
+          const SizedBox(height: 20),
+          const Text(
+            'Карточки',
+            style: TextStyle(fontFamily: 'wdxl', fontSize: 20),
+          ),
+
+          ListTile(
+            // leading: const Icon(Icons.delete_forever),
+            trailing: IconButton(
+              // onPressed: () => context.read<AppTheme>().toggleTheme(),
+              onPressed: () {
+                cardProvider.deleteAll();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: const Text('Все карточки удалены')),
+                );
+              },
+              icon: const Icon(FluentIcons.delete_24_regular),
+            ),
+            title: const Text('Удалить', style: TextStyle(fontFamily: 'wdxl')),
+            subtitle: const Text(
+              'Удалить все карточки',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
+          ),
+
+          ListTile(
+            // leading: const Icon(Icons.restore),
+            trailing: IconButton(
+              onPressed: () {
+                cardProvider.restoreAll();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: const Text('Все карточки восстановлены')),
+                );
+              },
+              icon: const Icon(FluentIcons.arrow_reset_24_regular),
+            ),
+            title: const Text(
+              'Восстановить',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
+            subtitle: const Text(
+              'Восстановить все карточки',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
+          ),
         ],
       ),
     );

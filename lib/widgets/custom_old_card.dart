@@ -10,37 +10,46 @@ import 'package:provider/provider.dart';
 class CustomOldCard extends StatelessWidget {
   final LearningCard card;
   final int index;
-  const CustomOldCard({super.key, required this.card, required this.index});
+  final VoidCallback onAddPressed;
+  const CustomOldCard({
+    super.key,
+    required this.card,
+    required this.index,
+    required this.onAddPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cardProvider = context.read<CardProvider>();
 
-    return SizedBox(
-      // height: 180,
-      child: Card(
-        color: card.cardBackgroundColor,
-        elevation: 5,
+    return Card(
+      color: card.cardBackgroundColor,
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // -------------------- Card Image --------------------
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child:
-                      card.imagePath != null &&
-                          File(card.imagePath!).existsSync()
-                      ? Image.file(File(card.imagePath!), fit: BoxFit.cover)
-                      : Image.asset('assets/images/default_card_image.jpg'),
+              if (card.imagePath != null) ...[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Image.file(File(card.imagePath!), fit: BoxFit.cover),
+                    // child:
+                    //     card.imagePath != null &&
+                    //         File(card.imagePath!).existsSync()
+                    //     ? Image.file(File(card.imagePath!), fit: BoxFit.cover)
+                    //     : Image.asset('assets/images/default_card_image.jpg'),
+                  ),
                 ),
-              ),
-
-              const SizedBox(width: 15),
+                const SizedBox(width: 15),
+              ],
 
               Expanded(
                 child: Column(
@@ -55,10 +64,10 @@ class CustomOldCard extends StatelessWidget {
 
                         Row(
                           children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(FluentIcons.add_24_filled),
-                            ),
+                            // IconButton(
+                            //   onPressed: () {},
+                            //   icon: Icon(FluentIcons.add_24_filled),
+                            // ),
                             IconButton(
                               onPressed: () async {
                                 final updatedCard = await Navigator.push(
@@ -78,7 +87,7 @@ class CustomOldCard extends StatelessWidget {
                             IconButton(
                               // onPressed: () => deleteCard(card),
                               onPressed: () => cardProvider.deleteCard(index),
-                              icon: Icon(Icons.delete, color: Colors.red),
+                              icon: Icon(Icons.delete),
                             ),
                           ],
                         ),

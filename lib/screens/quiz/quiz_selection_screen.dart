@@ -1,3 +1,4 @@
+import 'package:card_learn_languages/providers/app_provider.dart';
 import 'package:card_learn_languages/providers/app_theme.dart';
 import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:card_learn_languages/screens/quiz/quiz_screen.dart';
@@ -10,7 +11,7 @@ class QuizSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final textTheme = Theme.of(context).textTheme;
-    final currentTheme = context.watch<AppTheme>();
+    final currentTheme = context.watch<AppProvider>();
     final cards = context.watch<CardProvider>().cards;
 
     return Scaffold(
@@ -22,6 +23,7 @@ class QuizSelectionScreen extends StatelessWidget {
             const Text(
               'Выберите вариант',
               style: TextStyle(
+                fontFamily: 'wdxl',
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 3.0,
@@ -34,7 +36,9 @@ class QuizSelectionScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: currentTheme.isDark ? Colors.white : Colors.black,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   width: 1.5,
                 ),
               ),
@@ -45,7 +49,10 @@ class QuizSelectionScreen extends StatelessWidget {
                     builder: (context) => QuizScreen(cards: cards),
                   ),
                 ),
-                title: const Text('Флеш-карты', style: TextStyle(fontSize: 20)),
+                title: const Text(
+                  'Флеш-карты',
+                  style: TextStyle(fontFamily: 'wdxl', fontSize: 20),
+                ),
                 leading: const Icon(Icons.book),
               ),
             ),

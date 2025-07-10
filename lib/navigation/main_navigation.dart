@@ -1,3 +1,4 @@
+import 'package:card_learn_languages/providers/app_provider.dart';
 import 'package:card_learn_languages/providers/app_theme.dart';
 import 'package:card_learn_languages/screens/home/home_tab_bar_screen.dart';
 import 'package:card_learn_languages/screens/quiz/quiz_selection_screen.dart';
@@ -14,14 +15,15 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   ChangeNotifier currentTheme(BuildContext context) {
-    final currentTheme = context.watch<AppTheme>();
+    final currentTheme = context.watch<AppProvider>();
     return currentTheme;
   }
 
   int currentScreenIndex = 0;
   final List<Widget> screens = const [
     HomeTabBarScreen(),
-    QuizSelectionScreen(),
+    // QuizSelectionScreen(),
+    SettingsScreen(),
   ];
   final List<NavigationDestination> destinations = const [
     NavigationDestination(
@@ -30,29 +32,36 @@ class _MainNavigationState extends State<MainNavigation> {
       label: 'Главная',
     ),
     NavigationDestination(
-      selectedIcon: Icon(Icons.quiz),
-      icon: Icon(Icons.quiz_outlined),
-      label: 'Викторина',
+      selectedIcon: Icon(Icons.settings),
+      icon: Icon(Icons.settings_outlined),
+      label: 'Настройки',
     ),
   ];
 
-  final List<String> titles = const ['Главная', 'Викторина'];
+  final List<String> titles = const ['Главная', 'Настройки'];
 
   @override
   Widget build(BuildContext context) {
-    final currentTheme = context.watch<AppTheme>();
+    final currentTheme = context.watch<AppProvider>();
 
     final List<Widget> actions = currentScreenIndex == 0
         ? [
             IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsScreen()),
-                );
-              },
-              icon: Icon(Icons.settings),
+              onPressed: () => context.read<AppProvider>().toggleTheme(),
+              icon: Icon(
+                currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
+              ),
             ),
+
+            // IconButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => SettingsScreen()),
+            //     );
+            //   },
+            //   icon: Icon(Icons.settings),
+            // ),
           ]
         : [];
 
@@ -64,32 +73,20 @@ class _MainNavigationState extends State<MainNavigation> {
             ? TabBar(
                 tabs: [
                   Tab(text: 'Слова'),
-                  Tab(text: 'Карточки'),
+                  Tab(text: 'Папки'),
                 ],
               )
             : null,
       ),
-      body: currentScreenIndex == 0
-          ? HomeTabBarScreen()
-          : QuizSelectionScreen(),
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          indicatorColor: currentTheme.isDark
-              ? Colors.deepPurple
-              : Colors.indigoAccent,
-          // iconTheme: WidgetStatePropertyAll(
-          //   IconThemeData(color: currentTheme.isDark ? null : Colors.white),
-          // ),
-        ),
-        child: NavigationBar(
-          selectedIndex: currentScreenIndex,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentScreenIndex = index;
-            });
-          },
-          destinations: destinations,
-        ),
+      body: currentScreenIndex == 0 ? HomeTabBarScreen() : SettingsScreen(),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: currentScreenIndex,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentScreenIndex = index;
+          });
+        },
+        destinations: destinations,
       ),
     );
   }

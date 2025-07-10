@@ -222,6 +222,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1"
+  fab_circular_menu_plus:
+    dependency: "direct main"
+    description:
+      name: fab_circular_menu_plus
+      sha256: "8f1bcf147078bac31b4426b55b663c955d4d3d175148a0be32532447a208025c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -315,6 +323,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  flutter_expandable_fab:
+    dependency: "direct main"
+    description:
+      name: flutter_expandable_fab
+      sha256: "2a488600924fd2a041679ad889807ee5670414a7a518cf11d4854b9898b3504f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.2"
+  flutter_flip_card:
+    dependency: "direct main"
+    description:
+      name: flutter_flip_card
+      sha256: cf67f31e85fa4452f493cac2f3c123bcacacb0f7feb3cc5f831faeea77cdc671
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -741,6 +765,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  scrumlab_flutter_tindercard:
+    dependency: "direct main"
+    description:
+      name: scrumlab_flutter_tindercard
+      sha256: d94bb0487e6e10c3222006eec8cd63a20763e88feed2e8f9c4d3c86dd62a0dd5
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   shelf:
     dependency: transitive
     description:

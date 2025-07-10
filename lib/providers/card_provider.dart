@@ -35,6 +35,7 @@ class CardProvider extends ChangeNotifier {
     _cards = _box.values
         .map(
           (s) => LearningCard(
+            id: s.id,
             word: s.word,
             reading: s.reading,
             translation: s.translation,
@@ -68,14 +69,15 @@ class CardProvider extends ChangeNotifier {
       // тут есть ?, походу потому что в Hive
       // у карточки может не быть цвета, потому что это не required поле
       SaveCards(
-        card.word,
-        card.reading,
-        card.translation,
-        card.imagePath,
-        card.article,
-        card.flag,
-        card.articlecolor?.toARGB32(),
-        card.cardBackgroundColor?.toARGB32(),
+        id: card.id,
+        word: card.word,
+        reading: card.reading,
+        translation: card.translation,
+        imagePath: card.imagePath,
+        article: card.article,
+        flag: card.flag,
+        articleColor: card.articlecolor?.toARGB32(),
+        cardBackgroundColor: card.cardBackgroundColor?.toARGB32(),
       ),
     );
     notifyListeners();
@@ -89,16 +91,17 @@ class CardProvider extends ChangeNotifier {
     _box.putAt(
       index,
       SaveCards(
-        card.word,
-        card.reading,
-        card.translation,
-        card.imagePath,
-        card.article,
-        card.flag,
+        id: card.id,
+        word: card.word,
+        reading: card.reading,
+        translation: card.translation,
+        imagePath: card.imagePath,
+        article: card.article,
+        flag: card.flag,
         // тут есть ?, походу потому что в Hive
         // у карточки может не быть цвета, потому что это не required поле
-        card.articlecolor?.toARGB32(),
-        card.cardBackgroundColor?.toARGB32(),
+        articleColor: card.articlecolor?.toARGB32(),
+        cardBackgroundColor: card.cardBackgroundColor?.toARGB32(),
       ),
     );
     notifyListeners();
@@ -129,6 +132,7 @@ class CardProvider extends ChangeNotifier {
       _box.add(s);
       _cards.add(
         LearningCard(
+          id: s.id,
           word: s.word,
           reading: s.reading,
           translation: s.translation,
@@ -147,5 +151,13 @@ class CardProvider extends ChangeNotifier {
     }
     _trashed.clear();
     notifyListeners();
+  }
+
+  LearningCard? getCardById(String id) {
+    try {
+      return _cards.firstWhere((card) => card.id == id);
+    } catch (e) {
+      return null;
+    }
   }
 }

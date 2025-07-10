@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LearningCard {
+  final String id;
   final String? imagePath;
   final String? article;
   final String? flag;
@@ -11,6 +12,7 @@ class LearningCard {
   final Color? cardBackgroundColor;
 
   const LearningCard({
+    required this.id,
     this.imagePath,
     this.article,
     this.flag,
