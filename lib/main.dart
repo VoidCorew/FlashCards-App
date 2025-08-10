@@ -8,6 +8,7 @@ import 'package:card_learn_languages/navigation/main_navigation.dart';
 import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:card_learn_languages/providers/folders_provider.dart';
 import 'package:card_learn_languages/providers/save_card_colors_provider.dart';
+import 'package:card_learn_languages/tabs/tabs_screen.dart';
 // import 'package:card_learn_languages/theme/theme_app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';

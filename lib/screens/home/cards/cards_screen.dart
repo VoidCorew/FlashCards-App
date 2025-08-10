@@ -52,18 +52,61 @@ class _CardsScreenState extends State<CardsScreen> {
                       style: TextStyle(fontFamily: 'wdxl'),
                     ),
                   )
-                : ListView.builder(
-                    padding: EdgeInsets.all(16.0),
-                    itemCount: cards.length,
-                    itemBuilder: (context, index) {
-                      final card = cards[index];
-                      return CustomOldCard(
-                        card: card,
-                        index: index,
-                        onAddPressed: () => _addToFolderOrRoot(context, index),
-                      );
+                : LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Если ширина экрана < 600 — список
+                      if (constraints.maxWidth < 600) {
+                        return ListView.builder(
+                          padding: EdgeInsets.all(16),
+                          itemCount: cards.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: CustomOldCard(
+                              card: cards[index],
+                              index: index,
+                              onAddPressed: () =>
+                                  _addToFolderOrRoot(context, index),
+                            ),
+                          ),
+                        );
+                      } else {
+                        final crossAxisCount = (constraints.maxWidth ~/ 370)
+                            .clamp(1, 4); // 300 — желаемая ширина карточки
+                        return GridView.builder(
+                          padding: EdgeInsets.all(16),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                // maxCrossAxisExtent: 400,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                childAspectRatio:
+                                    3 / 2, // или подстроить под карточку
+                              ),
+                          itemCount: cards.length,
+                          itemBuilder: (context, index) => CustomOldCard(
+                            card: cards[index],
+                            index: index,
+                            onAddPressed: () =>
+                                _addToFolderOrRoot(context, index),
+                          ),
+                        );
+                      }
                     },
                   ),
+
+            // ListView.builder(
+            //     padding: EdgeInsets.all(16.0),
+            //     itemCount: cards.length,
+            //     itemBuilder: (context, index) {
+            //       final card = cards[index];
+            //       return CustomOldCard(
+            //         card: card,
+            //         index: index,
+            //         onAddPressed: () => _addToFolderOrRoot(context, index),
+            //       );
+            //     },
+            //   ),
           ),
         ],
       ),

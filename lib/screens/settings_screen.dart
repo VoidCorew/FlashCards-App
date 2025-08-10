@@ -66,9 +66,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final provider = context.watch<AppProvider>();
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Настройки', style: TextStyle(fontFamily: 'wdxl')),
-      // ),
+      appBar: AppBar(
+        title: const Text('Настройки', style: TextStyle(fontFamily: 'wdxl')),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

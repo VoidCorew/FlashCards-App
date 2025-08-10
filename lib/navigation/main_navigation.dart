@@ -3,6 +3,7 @@ import 'package:card_learn_languages/providers/app_theme.dart';
 import 'package:card_learn_languages/screens/home/home_tab_bar_screen.dart';
 import 'package:card_learn_languages/screens/quiz/quiz_selection_screen.dart';
 import 'package:card_learn_languages/screens/settings_screen.dart';
+import 'package:card_learn_languages/tabs/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,13 +20,13 @@ class _MainNavigationState extends State<MainNavigation> {
     return currentTheme;
   }
 
-  int currentScreenIndex = 0;
-  final List<Widget> screens = const [
-    HomeTabBarScreen(),
+  int _currentScreenIndex = 0;
+  final List<Widget> _screens = const [
+    TabsScreen(),
     // QuizSelectionScreen(),
     SettingsScreen(),
   ];
-  final List<NavigationDestination> destinations = const [
+  final List<NavigationDestination> _destinations = const [
     NavigationDestination(
       selectedIcon: Icon(Icons.home_rounded),
       icon: Icon(Icons.home_outlined),
@@ -38,56 +39,69 @@ class _MainNavigationState extends State<MainNavigation> {
     ),
   ];
 
-  final List<String> titles = const ['Главная', 'Настройки'];
+  final List<NavigationRailDestination> _railDestinations = const [
+    NavigationRailDestination(
+      selectedIcon: Icon(Icons.home),
+      icon: Icon(Icons.home_outlined),
+      label: Text('Главная', style: TextStyle(fontFamily: 'Sand')),
+    ),
+    NavigationRailDestination(
+      selectedIcon: Icon(Icons.settings),
+      icon: Icon(Icons.settings_outlined),
+      label: Text('Настройки', style: TextStyle(fontFamily: 'Sand')),
+    ),
+  ];
+
+  // final List<String> titles = const ['Главная', 'Настройки'];
 
   @override
   Widget build(BuildContext context) {
-    final currentTheme = context.watch<AppProvider>();
+    // final currentTheme = context.watch<AppProvider>();
+    final isWide = MediaQuery.of(context).size.width > 600;
 
-    final List<Widget> actions = currentScreenIndex == 0
-        ? [
-            IconButton(
-              onPressed: () => context.read<AppProvider>().toggleTheme(),
-              icon: Icon(
-                currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
-              ),
-            ),
-
-            // IconButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => SettingsScreen()),
-            //     );
-            //   },
-            //   icon: Icon(Icons.settings),
-            // ),
-          ]
-        : [];
+    // final List<Widget> actions = _currentScreenIndex == 0
+    //     ? [
+    //         IconButton(
+    //           onPressed: () => context.read<AppProvider>().toggleTheme(),
+    //           icon: Icon(
+    //             currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
+    //           ),
+    //         ),
+    //       ]
+    //     : [];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(titles[currentScreenIndex]),
-        actions: actions,
-        bottom: currentScreenIndex == 0
-            ? TabBar(
-                tabs: [
-                  Tab(text: 'Слова'),
-                  Tab(text: 'Папки'),
-                ],
-              )
-            : null,
-      ),
-      body: currentScreenIndex == 0 ? HomeTabBarScreen() : SettingsScreen(),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentScreenIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentScreenIndex = index;
-          });
-        },
-        destinations: destinations,
-      ),
+      body: isWide
+          ? Row(
+              children: [
+                NavigationRail(
+                  destinations: _railDestinations,
+                  selectedIndex: _currentScreenIndex,
+                  onDestinationSelected: (int value) {
+                    setState(() {
+                      _currentScreenIndex = value;
+                    });
+                  },
+                  indicatorColor: Colors.pink[400],
+                  labelType: NavigationRailLabelType.selected,
+                ),
+                Expanded(child: _screens[_currentScreenIndex]),
+              ],
+            )
+          : _currentScreenIndex == 0
+          ? TabsScreen()
+          : SettingsScreen(),
+      bottomNavigationBar: isWide
+          ? null
+          : NavigationBar(
+              selectedIndex: _currentScreenIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _currentScreenIndex = index;
+                });
+              },
+              destinations: _destinations,
+            ),
     );
   }
 }
