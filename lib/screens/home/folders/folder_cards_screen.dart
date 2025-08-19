@@ -11,17 +11,12 @@ class FolderCardsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('Загрузка экрана папки: $folderId');
-
-    final folderProvider = context.watch<FoldersProvider>();
     final folder = context.watch<FoldersProvider>().folders.firstWhere(
       (f) => f.id == folderId,
       orElse: () {
         return Folder(id: 'error', name: 'Ошибка');
       },
     );
-
-    // debugPrint('Карточки в папке ${folder.name}: ${folder.cardsIds}');
 
     final cardProvider = context.watch<CardProvider>();
     final cards = cardProvider.cards
@@ -71,7 +66,7 @@ class FolderCardsScreen extends StatelessWidget {
           return CustomOldCard(
             card: card,
             index: cardProvider.cards.indexWhere((c) => c.id == card.id),
-            onAddPressed: () {}, // Отключаем функционал в этом экране
+            onAddPressed: () {},
           );
         },
       ),

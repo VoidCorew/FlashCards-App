@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:card_learn_languages/models/learning_card.dart';
 import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:card_learn_languages/screens/home/cards/create_edit_card.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +32,7 @@ class CustomOldCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // -------------------- Card Image --------------------
+              // -------------------- Изображение карточки --------------------
               if (card.imagePath != null) ...[
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
@@ -41,11 +40,6 @@ class CustomOldCard extends StatelessWidget {
                     width: 100,
                     height: 100,
                     child: Image.file(File(card.imagePath!), fit: BoxFit.cover),
-                    // child:
-                    //     card.imagePath != null &&
-                    //         File(card.imagePath!).existsSync()
-                    //     ? Image.file(File(card.imagePath!), fit: BoxFit.cover)
-                    //     : Image.asset('assets/images/default_card_image.jpg'),
                   ),
                 ),
                 const SizedBox(width: 15),
@@ -56,7 +50,7 @@ class CustomOldCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ------------------------------ Card Icons ------------------------------
+                    // ------------------------------ Иконка карточки ------------------------------
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -64,10 +58,6 @@ class CustomOldCard extends StatelessWidget {
 
                         Row(
                           children: [
-                            // IconButton(
-                            //   onPressed: () {},
-                            //   icon: Icon(FluentIcons.add_24_filled),
-                            // ),
                             IconButton(
                               onPressed: () async {
                                 final updatedCard = await Navigator.push(
@@ -85,7 +75,6 @@ class CustomOldCard extends StatelessWidget {
                               icon: Icon(Icons.edit),
                             ),
                             IconButton(
-                              // onPressed: () => deleteCard(card),
                               onPressed: () => cardProvider.deleteCard(index),
                               icon: Icon(Icons.delete),
                             ),
@@ -93,11 +82,9 @@ class CustomOldCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // const SizedBox(height: 3),
 
-                    // ------------------------------ Card Words ------------------------------
+                    // ------------------------------ Слова карточки ------------------------------
                     Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
@@ -113,40 +100,6 @@ class CustomOldCard extends StatelessWidget {
                         const SizedBox(width: 15),
 
                         Text(card.word, style: theme.textTheme.headlineLarge),
-
-                        // const VerticalDivider(
-                        //   width: 20,
-                        //   thickness: 1,
-                        //   indent: 20,
-                        //   endIndent: 0,
-                        //   color: Colors.white,
-                        // ),
-                        // Expanded(
-                        //   child: Padding(
-                        //     padding: EdgeInsetsGeometry.only(
-                        //       left: 20,
-                        //       right: 10,
-                        //     ),
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       children: [
-                        //         Text(
-                        //           card.word,
-                        //           style: theme.textTheme.headlineLarge,
-                        //         ),
-
-                        //         const SizedBox(width: 10),
-
-                        //         Text(
-                        //           card.reading,
-                        //           style: theme.textTheme.labelMedium?.copyWith(
-                        //             fontStyle: FontStyle.italic,
-                        //           ),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
 
@@ -173,9 +126,6 @@ class CustomOldCard extends StatelessWidget {
 
                     Text(
                       card.translation,
-                      // style: theme.textTheme.labelLarge?.copyWith(
-                      //   fontWeight: FontWeight.w500,
-                      // ),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

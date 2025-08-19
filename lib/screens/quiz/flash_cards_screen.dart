@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:card_learn_languages/models/learning_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
-import 'package:flutter_flip_card/flipcard/flip_card.dart';
 import 'package:flutter_flip_card/flutter_flip_card.dart';
 
 class FlashCardsScreen extends StatefulWidget {
@@ -75,19 +73,32 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
           Row(
             children: [
               TextButton(
-                onPressed: () =>
-                    Navigator.of(context).popUntil((route) => route.isFirst),
-                child: const Text(
-                  'Выйти',
-                  style: TextStyle(fontFamily: 'wdxl'),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                 ),
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                child: Text('Выйти', style: TextStyle(fontFamily: 'wdxl')),
               ),
+              const SizedBox(width: 5),
               TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   _restart();
                 },
-                child: const Text(
+                child: Text(
                   'Начать снова',
                   style: TextStyle(fontFamily: 'wdxl'),
                 ),
@@ -167,21 +178,33 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                       onPressed: _markLearned,
-                      child: const Text(
+                      child: Text(
                         'Выучено',
-                        style: TextStyle(fontSize: 25, fontFamily: 'wdxl'),
+                        style: TextStyle(fontFamily: 'wdxl', fontSize: 25),
                       ),
                     ),
-
-                    const SizedBox(height: 20),
-
-                    ElevatedButton(
+                    const SizedBox(width: 5),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                       onPressed: _markStillLearning,
-                      child: const Text(
-                        'Ещё учу',
-                        style: TextStyle(fontSize: 25, fontFamily: 'wdxl'),
+                      child: Text(
+                        'Еще учу',
+                        style: TextStyle(fontFamily: 'wdxl', fontSize: 25),
                       ),
                     ),
                   ],
@@ -193,64 +216,6 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
       ),
     );
   }
-
-  // Widget _buildCard(LearningCard card) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Theme.of(context).brightness == Brightness.dark
-  //               ? Colors.white
-  //               : Colors.black,
-  //           // spreadRadius: 2,
-  //           blurRadius: 10,
-  //           offset: Offset(0, 0),
-  //         ),
-  //       ],
-  //     ),
-  //     child: Card(
-  //       // elevation: 4,
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(16.0),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             if (card.imagePath != null) ...[
-  //               Image.file(
-  //                 File(card.imagePath!),
-  //                 width: 100,
-  //                 height: 100,
-  //                 fit: BoxFit.cover,
-  //               ),
-  //               const SizedBox(height: 12),
-  //             ],
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: [
-  //                 if (card.article != null)
-  //                   Text(
-  //                     card.article!,
-  //                     style: TextStyle(
-  //                       fontSize: 24,
-  //                       color: card.articlecolor,
-  //                       fontWeight: FontWeight.bold,
-  //                     ),
-  //                   ),
-  //                 const SizedBox(width: 8),
-  //                 Text(card.word, style: const TextStyle(fontSize: 32)),
-  //               ],
-  //             ),
-  //             const SizedBox(height: 12),
-  //             Text(card.reading, style: const TextStyle(fontSize: 20)),
-  //             const SizedBox(height: 8),
-  //             Text(card.translation, style: const TextStyle(fontSize: 18)),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildCard(LearningCard card) {
     return FlipCard(
@@ -264,14 +229,12 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
               color: Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
                   : Colors.black,
-              // spreadRadius: 2,
               blurRadius: 10,
               offset: Offset(0, 0),
             ),
           ],
         ),
         child: Card(
-          // elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -279,7 +242,6 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              // mainAxisSize: MainAxisSize.min,
               children: [
                 if (card.imagePath != null) ...[
                   Image.file(
@@ -322,7 +284,6 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
               color: Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
                   : Colors.black,
-              // spreadRadius: 2,
               blurRadius: 10,
               offset: Offset(0, 0),
             ),
@@ -331,7 +292,6 @@ class _FlashCardsScreenState extends State<FlashCardsScreen> {
         child: Card(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            // mainAxisSize: MainAxisSize.min,
             children: [
               Text(card.translation, style: const TextStyle(fontSize: 18)),
             ],

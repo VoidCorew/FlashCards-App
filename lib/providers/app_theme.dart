@@ -20,7 +20,6 @@ class AppTheme extends ChangeNotifier {
     _settingsBox = Hive.box<AppSettings>(_boxName);
     final saved = _settingsBox.get(_key);
     _mode = saved?.themeMode ?? AppThemeMode.auto;
-    // _isDark = _settingsBox.get(_keyIsDark, defaultValue: false) as bool;
   }
 
   void toggleTheme() {

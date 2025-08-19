@@ -1,4 +1,3 @@
-import 'package:card_learn_languages/navigation/main_navigation.dart';
 import 'package:card_learn_languages/providers/app_provider.dart';
 import 'package:card_learn_languages/screens/home/cards/cards_screen.dart';
 import 'package:card_learn_languages/screens/home/folders/folders_screen.dart';
@@ -28,16 +27,6 @@ class _TabsScreenState extends State<TabsScreen> {
                 currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
               ),
             ),
-
-            // IconButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => SettingsScreen()),
-            //     );
-            //   },
-            //   icon: Icon(Icons.settings),
-            // ),
           ]
         : [];
 
@@ -45,7 +34,6 @@ class _TabsScreenState extends State<TabsScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          // title: const Text('Главная'),
           title: Text(titles[_currentScreenIndex]),
           actions: actions,
           bottom: _currentScreenIndex == 0

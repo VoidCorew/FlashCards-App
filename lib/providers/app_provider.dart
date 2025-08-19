@@ -12,9 +12,6 @@ class AppProvider extends ChangeNotifier {
   bool _isInitialized = false;
   bool get isInitialized => _isInitialized;
 
-  // AppSettings get settings => _settings ?? AppSettings();
-  // String? get wallpaperPath => _settings?.wallpaperPath;
-
   AppProvider() {
     _init();
   }
@@ -30,14 +27,6 @@ class AppProvider extends ChangeNotifier {
       _settings = existing;
     }
 
-    // if (_box.isEmpty) {
-    //   _settings = AppSettings();
-    //   // await _box!.put('settings', _settings!);
-    //   await _box.put(_settingsKey, _settings);
-    // } else {
-    //   _settings = _box.get(_settingsKey)!;
-    // }
-
     _isInitialized = true;
     notifyListeners();
   }
@@ -52,7 +41,6 @@ class AppProvider extends ChangeNotifier {
       case AppThemeMode.light:
         return ThemeMode.light;
       case AppThemeMode.auto:
-      default:
         return ThemeMode.system;
     }
   }

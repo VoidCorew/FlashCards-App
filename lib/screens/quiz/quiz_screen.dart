@@ -1,12 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 
-// import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:card_learn_languages/models/learning_card.dart';
 import 'package:el_tooltip/el_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:scrumlab_flutter_tindercard/scrumlab_flutter_tindercard.dart';
 
 class QuizScreen extends StatefulWidget {
   final List<LearningCard> cards;
@@ -39,36 +36,6 @@ class _QuizScreenState extends State<QuizScreen> {
     remainingCards = List.of(widget.cards);
   }
 
-  FutureOr<bool> _onSwipe(
-    int previousIndex,
-    int? currentIndex,
-    CardSwiperDirection direction,
-  ) async {
-    if (previousIndex < 0 || previousIndex >= remainingCards.length) {
-      return false;
-    }
-    final card = remainingCards[previousIndex];
-
-    if (direction == CardSwiperDirection.right) {
-      learnedCards.add(card);
-    } else if (direction == CardSwiperDirection.left) {
-      stillLearningCards.add(card);
-    }
-
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    if (mounted) {
-      setState(() {
-        remainingCards.removeAt(previousIndex);
-      });
-    }
-    // setState(() {
-    //   remainingCards.removeAt(previousIndex);
-    // });
-
-    return true;
-  }
-
   List<Container> cards = [
     Container(
       alignment: Alignment.center,
@@ -95,9 +62,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CardController controller;
-    // final int displayCount = remainingCards.length >= 2 ? 2 : 1;
-
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -131,19 +95,6 @@ class _QuizScreenState extends State<QuizScreen> {
                     ],
                   ),
 
-                  // IconButton(
-                  //   onPressed: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (_) => AlertDialog(
-                  //         content: const Text(
-                  //           'Свайпните вправо, чтобы пометить слово как "Выученное", свайпните влево, чтобы пометить слово как "Еще учу"',
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  //   icon: Icon(Icons.info),
-                  // ),
                   ElTooltip(
                     content: Text(
                       'Свайпните вправо, чтобы пометить слово как "Выученное", свайпните влево, чтобы пометить слово как "Еще учу"',
@@ -156,40 +107,6 @@ class _QuizScreenState extends State<QuizScreen> {
               const SizedBox(height: 20),
 
               if (remainingCards.isNotEmpty) ...[
-                // SizedBox(
-                //   height: 500,
-                //   width: double.infinity,
-                //   child: TinderSwapCard(
-                //     orientation: AmassOrientation.bottom,
-                //     totalNum: remainingCards.length,
-                //     stackNum: 3,
-                //     swipeEdge: 4.0,
-                //     maxWidth: MediaQuery.of(context).size.width * 0.9,
-                //     maxHeight: MediaQuery.of(context).size.width * 0.9,
-                //     minWidth: MediaQuery.of(context).size.width * 0.8,
-                //     minHeight: MediaQuery.of(context).size.width * 0.8,
-                //     cardBuilder: (context, index) {
-                //       final card = remainingCards[index];
-                //       return _buildSwipeCard(card);
-                //     },
-                //     cardController: controller = CardController(),
-                //     swipeUpdateCallback:
-                //         (DragUpdateDetails details, Alignment align) {},
-                //     swipeCompleteCallback:
-                //         (CardSwipeOrientation orientation, int index) {
-                //           final card = remainingCards[index];
-
-                //           if (orientation == CardSwipeOrientation.left) {
-                //             stillLearningCards.add(card);
-                //           } else if (orientation == CardSwipeOrientation.right) {
-                //             learnedCards.add(card);
-                //           }
-
-                //           remainingCards.removeAt(index);
-                //           setState(() {});
-                //         },
-                //   ),
-                // ),
                 SizedBox(
                   height: 500,
                   width: double.infinity,
@@ -206,19 +123,11 @@ class _QuizScreenState extends State<QuizScreen> {
                             percentThresholdY,
                           ) {
                             final card = remainingCards[index];
-                            // return _buildSwipeCard(card);
                             return Stack(children: [_buildSwipeCard(card)]);
                           },
                       cardsCount: remainingCards.length,
                       isLoop: false,
-                      // allowedSwipeDirection: AllowedSwipeDirection.only(
-                      //   right: true,
-                      //   left: true,
-                      //   up: false,
-                      //   down: false,
-                      // ),
                       numberOfCardsDisplayed: 1,
-                      // onSwipe: _onSwipe,
                     ),
                   ),
                 ),
@@ -248,18 +157,6 @@ class _QuizScreenState extends State<QuizScreen> {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   appBar: AppBar(),
-    //   body: Flexible(
-    //     flex: 1,
-    //     child: CardSwiper(
-    //       cardsCount: cards.length,
-    //       cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
-    //           cards[index],
-    //     ),
-    //   ),
-    // );
   }
 }
 
@@ -291,65 +188,6 @@ Widget _buildSwipeCard(LearningCard card) {
 
           const Divider(thickness: 2),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                card.article ?? '',
-                style: TextStyle(
-                  fontFamily: 'wdxl',
-                  fontSize: 25,
-                  color: card.articlecolor,
-                ),
-              ),
-              const SizedBox(width: 15),
-              Text(
-                card.word,
-                style: TextStyle(fontSize: 30, color: Colors.black),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            card.reading,
-            style: TextStyle(fontSize: 20, color: Colors.black),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            card.translation,
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _buildCard(LearningCard card) {
-  return Card(
-    color: card.cardBackgroundColor,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: card.imagePath != null
-                ? Image.file(
-                    height: 100,
-                    width: 100,
-                    File(card.imagePath!),
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    height: 100,
-                    width: 100,
-                    'assets/images/default_card_image.jpg',
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          const Divider(thickness: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

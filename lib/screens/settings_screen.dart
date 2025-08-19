@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:card_learn_languages/models/save_theme.dart';
 import 'package:card_learn_languages/providers/app_provider.dart';
-import 'package:card_learn_languages/providers/app_theme.dart';
 import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -42,12 +41,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  // void resetWallpaper() {
-  //   setState(() {
-  //     _localImage = null;
-  //   });
-  // }
-
   String themeLabel(AppThemeMode mode) {
     switch (mode) {
       case AppThemeMode.auto:
@@ -63,7 +56,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final appProvider = context.watch<AppProvider>();
     final cardProvider = context.watch<CardProvider>();
-    final provider = context.watch<AppProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -82,62 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ),
 
-          // ListTile(
-          //   // leading: const Icon(Icons.wb_sunny),
-          //   // trailing: IconButton(
-          //   //   onPressed: () => context.read<AppTheme>().toggleTheme(),
-          //   //   // icon: Icon(
-          //   //   //   currentTheme.isDark ? Icons.wb_sunny : Icons.nights_stay,
-          //   //   // ),
-          //   //   icon: Icon(
-          //   //     currentTheme.isDark
-          //   //         ? FluentIcons.weather_sunny_24_regular
-          //   //         : FluentIcons.weather_moon_24_regular,
-          //   //   ),
-          //   // ),
-          //   // trailing: DropdownButton<AppThemeMode>(
-          //   //   value: provider.settings.themeMode,
-          //   //   items: AppThemeMode.values.map((mode) {
-          //   //     return DropdownMenuItem<AppThemeMode>(
-          //   //       value: mode,
-          //   //       child: Text(themeLabel(mode)),
-          //   //     );
-          //   //   }).toList(),
-          //   //   onChanged: (AppThemeMode? newMode) {
-          //   //     if (newMode != null) {
-          //   //       provider.setThemeMode(newMode);
-          //   //     }
-          //   //   },
-          //   // ),
-          //   trailing: DropdownMenu<AppThemeMode>(
-          //     initialSelection: provider.settings.themeMode,
-          //     dropdownMenuEntries: AppThemeMode.values.map((mode) {
-          //       return DropdownMenuEntry<AppThemeMode>(
-          //         value: mode,
-          //         label: themeLabel(mode),
-          //         // labelWidget: Text(
-          //         //   themeLabel(mode),
-          //         //   style: TextStyle(fontFamily: 'wdxl'),
-          //         // ),
-          //       );
-          //     }).toList(),
-          //     onSelected: (AppThemeMode? newMode) {
-          //       if (newMode != null) {
-          //         provider.setThemeMode(newMode);
-          //       }
-          //     },
-          //   ),
-          //   title: const Text(
-          //     'Тема приложения',
-          //     style: TextStyle(fontFamily: 'wdxl'),
-          //   ),
-          //   subtitle: const Text(
-          //     'Выбрать тему приложения',
-          //     style: TextStyle(fontFamily: 'wdxl'),
-          //   ),
-          // ),
           ListTile(
-            // leading: const Icon(Icons.photo_library),
             trailing: IconButton(
               onPressed: () => _pickImage(appProvider),
               icon: Icon(FluentIcons.folder_open_24_regular),
@@ -153,7 +90,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           ListTile(
-            // leading: const Icon(Icons.photo_library),
             trailing: IconButton(
               onPressed: () => appProvider.resetWallpaper(),
               icon: Icon(FluentIcons.arrow_redo_24_regular),
@@ -177,9 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           ListTile(
-            // leading: const Icon(Icons.delete_forever),
             trailing: IconButton(
-              // onPressed: () => context.read<AppTheme>().toggleTheme(),
               onPressed: () {
                 cardProvider.deleteAll();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -196,7 +130,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           ListTile(
-            // leading: const Icon(Icons.restore),
             trailing: IconButton(
               onPressed: () {
                 cardProvider.restoreAll();

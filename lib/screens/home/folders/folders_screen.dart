@@ -6,7 +6,6 @@ import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:card_learn_languages/providers/folders_provider.dart';
 import 'package:card_learn_languages/screens/home/folders/card_preview_screen.dart';
 import 'package:card_learn_languages/screens/home/folders/folder_cards_screen.dart';
-import 'package:card_learn_languages/widgets/custom_old_card.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -32,7 +31,6 @@ class FoldersScreen extends StatelessWidget {
         Scaffold(
           body: ListView(
             children: [
-              // Секция корневых карточек
               if (rootCards.isNotEmpty)
                 ExpansionTile(
                   leading: const Icon(FluentIcons.card_ui_24_regular),
@@ -42,7 +40,6 @@ class FoldersScreen extends StatelessWidget {
                   ),
                   children: rootCards.map((cardId) {
                     final card = cardProvider.getCardById(cardId);
-                    // return CustomOldCard(card: card, index: index, onAddPressed: onAddPressed)
                     return ListTile(
                       onTap: () {
                         if (card != null) {
@@ -54,7 +51,7 @@ class FoldersScreen extends StatelessWidget {
                             ),
                           );
                         }
-                      }, // Тут переход в folder_cards_card_preview.dart
+                      },
                       leading: const Icon(
                         FluentIcons.card_ui_portrait_flip_24_regular,
                       ),
@@ -71,35 +68,32 @@ class FoldersScreen extends StatelessWidget {
                   }).toList(),
                 ),
 
-              // Список папок
-              ...folders
-                  .map(
-                    (folder) => ListTile(
-                      leading: const Icon(Icons.folder),
-                      title: Text(folder.name),
-                      titleTextStyle: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
-                        fontFamily: 'wdxl',
-                        fontSize: 20,
+              ...folders.map(
+                (folder) => ListTile(
+                  leading: const Icon(Icons.folder),
+                  title: Text(folder.name),
+                  titleTextStyle: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontFamily: 'wdxl',
+                    fontSize: 20,
+                  ),
+                  trailing: IconButton(
+                    onPressed: () => folderProvider.deleteFolder(folder.id),
+                    icon: const Icon(Icons.delete),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            FolderCardsScreen(folderId: folder.id),
                       ),
-                      trailing: IconButton(
-                        onPressed: () => folderProvider.deleteFolder(folder.id),
-                        icon: const Icon(Icons.delete),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                FolderCardsScreen(folderId: folder.id),
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                  .toList(),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
           floatingActionButton: SpeedDial(
@@ -145,20 +139,44 @@ class FoldersScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Новая папка', style: TextStyle(fontFamily: 'wdxl')),
-        content: TextField(controller: controller),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hint: const Text(
+              'Введите название папки',
+              style: TextStyle(fontFamily: 'wdxl'),
+            ),
+          ),
+        ),
         actions: [
           TextButton(
-            onPressed: Navigator.of(context).pop,
-            child: const Text('Отмена', style: TextStyle(fontFamily: 'wdxl')),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Отмена', style: TextStyle(fontFamily: 'wdxl')),
           ),
           TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
             onPressed: () {
               if (controller.text.isNotEmpty) {
                 context.read<FoldersProvider>().addFolder(controller.text);
                 Navigator.pop(context);
               }
             },
-            child: const Text('Создать', style: TextStyle(fontFamily: 'wdxl')),
+            child: Text('Создать', style: TextStyle(fontFamily: 'wdxl')),
           ),
         ],
       ),
@@ -181,8 +199,11 @@ class FoldersScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final card = cards[index];
               return ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 leading: const Icon(FluentIcons.card_ui_24_regular),
-                title: Text(card.word),
+                title: Text(card.word, style: TextStyle(fontFamily: 'wdxl')),
                 onTap: () {
                   Navigator.pop(context);
                   _showAddOptions(context, card);
@@ -197,44 +218,58 @@ class FoldersScreen extends StatelessWidget {
 
   void _showAddOptions(BuildContext context, LearningCard card) {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       useSafeArea: true,
       context: context,
       builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              leading: Icon(Icons.folder),
-              title: Text("Добавить в папку"),
-              onTap: () {
-                Navigator.pop(context);
-                _showFolderSelection(context, card);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text("Добавить в корень"),
-              onTap: () {
-                context.read<FoldersProvider>().addCardToRoot(card.id);
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Карточка добавлена в корень',
-                      style: TextStyle(fontFamily: "wdxl"),
-                    ),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.25,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+                leading: Icon(Icons.folder),
+                title: Text(
+                  'Добавить в папку',
+                  style: TextStyle(fontFamily: 'wdxl'),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showFolderSelection(context, card);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.credit_card),
+                title: Text(
+                  'Добавить в корень',
+                  style: TextStyle(fontFamily: 'wdxl'),
+                ),
+                onTap: () {
+                  context.read<FoldersProvider>().addCardToRoot(card.id);
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Карточка добавлена в корень',
+                        style: TextStyle(fontFamily: "wdxl"),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -246,6 +281,12 @@ class FoldersScreen extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       builder: (context) => folders.isEmpty
           ? Center(
               child: const Text(
@@ -259,28 +300,32 @@ class FoldersScreen extends StatelessWidget {
                 itemCount: folders.length,
                 itemBuilder: (context, index) {
                   final folder = folders[index];
-                  return ClipRRect(
-                    borderRadius: index == 0
-                        ? BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          )
-                        : BorderRadius.zero,
-                    child: ListTile(
-                      title: Text(folder.name),
-                      onTap: () {
-                        folderProvider.addCardToFolder(card.id, folder.id);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Карточка добавлена в ${folder.name}',
-                              style: TextStyle(fontFamily: "wdxl"),
-                            ),
-                          ),
-                        );
-                      },
+                  return ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: index == 0
+                          ? BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            )
+                          : BorderRadius.zero,
                     ),
+                    leading: const Icon(Icons.folder_open),
+                    title: Text(
+                      folder.name,
+                      style: TextStyle(fontFamily: 'wdxl'),
+                    ),
+                    onTap: () {
+                      folderProvider.addCardToFolder(card.id, folder.id);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Карточка добавлена в ${folder.name}',
+                            style: TextStyle(fontFamily: "wdxl"),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

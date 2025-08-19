@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:card_learn_languages/providers/app_theme.dart';
 import 'package:card_learn_languages/models/learning_card.dart';
 import 'package:card_learn_languages/providers/save_card_colors_provider.dart';
 // import 'package:card_learn_languages/widgets/custom_drop_down_color_menu.dart';
@@ -26,38 +25,21 @@ class CreateEditCardScreen extends StatefulWidget {
 }
 
 class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
-  // это текстовые контроллеры для ловки пользовательского ввода
-  // но я не понимаю почему они late
   late final TextEditingController articleController;
   late final TextEditingController wordController;
   late final TextEditingController readingController;
   late final TextEditingController translationController;
-  // late final String? flag;
-  // late final Color? articleColor;
-  // late final Color? cardBackgroundColor;
 
-  // ---------------------- Image ----------------------
-  //
   File? _pickedImage;
   final ImagePicker _picker = ImagePicker();
 
-  // это переменные для начальных значений для некоторых элементов
-  //! но нужно это исправить, потому-что даже при редактировании
-  //! у меня все равно показываются начальные значения
   String? _selectedFlag;
   late Color _selectedArticleColor;
   late Color _selectedCardBackgroundColor;
 
-  //! это для сохранения выбранных цветов
-  // late Color _tmpArticleColor;
-  // late Color _tmpCardBackgroundColor;
-
-  //! для подсветки выбранных цветов
   Color? _tmpSelectedArticleColor;
   Color? _tmpSelectedCardBackgroundColor;
 
-  // ну вот тут как-раз таки инициализация late переменных и мы в них ставим наш артикль, слово или чтение
-  // я так понял что это late потому что этот экран работает как create и edit,
   @override
   void initState() {
     super.initState();
@@ -78,9 +60,6 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
     _tmpSelectedCardBackgroundColor = _selectedCardBackgroundColor;
   }
 
-  // это для выбора картинки для карточки
-  //! тут мы создаем какой-то XFile и после у переменной File? _pickedImage
-  //! вызываем метод pickImage, но я не понимаю прикол maxWidth, minHeight, imageQuality
   Future<void> _pickImage() async {
     final XFile? picked = await _picker.pickImage(
       source: ImageSource.gallery,
@@ -89,9 +68,6 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
       imageQuality: 85,
     );
 
-    //! тут проверка, я так понял со всеми переменными с ? в async методе
-    // нужно делать такую проверку
-    // ну и после, мы просто присваиваем путь выбранной картинки к _pickedImage
     if (picked != null) {
       setState(() {
         _pickedImage = File(picked.path);
@@ -99,7 +75,6 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
     }
   }
 
-  //! я не понимаю для чего это нужно
   @override
   void dispose() {
     super.dispose();
@@ -130,19 +105,33 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
           ),
           actions: [
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Отмена'),
+              child: Text('Отмена', style: TextStyle(fontFamily: 'wdxl')),
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
               onPressed: () {
                 setState(() {
                   _selectedArticleColor = tempColor;
                 });
                 Navigator.pop(context);
               },
-              child: const Text('Сохранить'),
+              child: Text('Сохранить', style: TextStyle(fontFamily: 'wdxl')),
             ),
           ],
         );
@@ -170,19 +159,33 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
           ),
           actions: [
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Отмена'),
+              child: Text('Отмена', style: TextStyle(fontFamily: 'wdxl')),
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
               onPressed: () {
                 setState(() {
                   _selectedCardBackgroundColor = tempColor;
                 });
                 Navigator.pop(context);
               },
-              child: const Text('Сохранить'),
+              child: Text('Сохранить', style: TextStyle(fontFamily: 'wdxl')),
             ),
           ],
         );
@@ -238,22 +241,6 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                               decoration: BoxDecoration(
                                 color: c,
                                 shape: BoxShape.circle,
-                                // border: Border.all(
-                                //   color: _tmpCardBackgroundColor == c
-                                //       ? Colors.black
-                                //       : Colors.grey,
-                                //   width: _tmpCardBackgroundColor == c ? 2 : 1,
-                                // ),
-                                // border: isSelected
-                                //     ? Border.all(
-                                //         color:
-                                //             Theme.of(context).brightness ==
-                                //                 Brightness.dark
-                                //             ? Colors.white
-                                //             : Colors.black,
-                                //         width: 3,
-                                //       )
-                                //     : null,
                                 border: isSelected
                                     ? Border.all(
                                         color: _getBorderColor(c, context),
@@ -261,13 +248,6 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                                       )
                                     : null,
                               ),
-                              // child: isSelected
-                              //     ? Icon(
-                              //         Icons.check,
-                              //         color: Colors.white,
-                              //         size: 10,
-                              //       )
-                              //     : null,
                               child: isSelected
                                   ? Icon(
                                       Icons.check,
@@ -335,12 +315,29 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                   ),
                   actions: [
                     TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Отмена'),
+                      child: Text(
+                        'Отмена',
+                        style: TextStyle(fontFamily: 'wdxl'),
+                      ),
                     ),
                     TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                       onPressed: () {
                         setState(() {
                           _selectedArticleColor =
@@ -351,7 +348,10 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                         });
                         Navigator.pop(context);
                       },
-                      child: const Text('Выбрать'),
+                      child: Text(
+                        'Выбрать',
+                        style: TextStyle(fontFamily: 'wdxl'),
+                      ),
                     ),
                   ],
                 );
@@ -376,14 +376,11 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // для сохранения цветов в Hive
     final prefs = context.read<SaveCardColorsProvider>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          // просто я так понял что при создании же карточка пустая и она
-          // по факту равна null и из-за этого тут такая гениальная проверка
           widget.card == null ? 'Новая карточка' : 'Редактирование',
           style: TextStyle(fontFamily: 'wdxl'),
         ),
@@ -395,19 +392,10 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
             child: Column(
               children: [
                 // ? ---------------------------- Изображение карточки ----------------------------
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Выберите изображение для карточки',
-                      style: TextStyle(fontSize: 20, fontFamily: 'wdxl'),
-                    ),
-
-                    IconButton(
-                      onPressed: _pickImage,
-                      icon: Icon(Icons.folder_copy),
-                    ),
-                  ],
+                _buildCustomRow(
+                  'Выберите изображение для карточки',
+                  _pickImage,
+                  Icons.folder_copy,
                 ),
                 const SizedBox(height: 20),
                 // ? ---------------------------- Показ картинки после выбора ----------------------------
@@ -425,54 +413,26 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                 ],
 
                 // ? ---------------------------- Убрать картинку карточки ----------------------------
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Убрать картинку у карточки',
-                      style: TextStyle(fontSize: 20, fontFamily: 'wdxl'),
-                    ),
-
-                    IconButton(
-                      onPressed: () => setState(() {
-                        _pickedImage = null;
-                      }),
-                      icon: Icon(Icons.remove_circle),
-                    ),
-                  ],
-                ),
+                _buildCustomRow('Убрать картинку у карточки', () {
+                  setState(() {
+                    _pickedImage = null;
+                  });
+                }, Icons.remove_circle),
                 const SizedBox(height: 20),
 
                 // ? ---------------------------- Цвет карточки ----------------------------
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Выберите цвет для карточки',
-                      style: TextStyle(fontSize: 20, fontFamily: 'wdxl'),
-                    ),
-
-                    IconButton(
-                      onPressed: _selectCardBackgroundColor,
-                      icon: Icon(Icons.palette),
-                    ),
-                  ],
+                _buildCustomRow(
+                  'Выберите цвет для карточки',
+                  _selectCardBackgroundColor,
+                  Icons.palette,
                 ),
                 const SizedBox(height: 20),
-                // ? ---------------------------- Цвет артикля ----------------------------
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Выберите цвет для артикля',
-                      style: TextStyle(fontSize: 20, fontFamily: 'wdxl'),
-                    ),
 
-                    IconButton(
-                      onPressed: _selectArticleColor,
-                      icon: Icon(Icons.abc),
-                    ),
-                  ],
+                // ? ---------------------------- Цвет артикля ----------------------------
+                _buildCustomRow(
+                  'Выберите цвет для артикля',
+                  _selectArticleColor,
+                  Icons.abc,
                 ),
                 const SizedBox(height: 20),
 
@@ -539,14 +499,15 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                         controller: articleController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          // labelText: 'Артикль',
                           label: Text(
                             'Артикль',
                             style: TextStyle(fontFamily: 'wdxl'),
                           ),
-                          // hintText: '(｡♥‿♥｡)',
                           hint: Text(
-                            '(｡♥‿♥｡)',
+                            // '(｡♥‿♥｡)',
+                            'Введите артикль',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontFamily: 'wdxl'),
                           ),
                         ),
@@ -565,47 +526,18 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: wordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Слово', style: TextStyle(fontFamily: 'wdxl')),
-                    // labelText: 'Слово',
-                    hint: Text(
-                      'Ня~ введите словечко, пожалуйста! (=^-ω-^=)',
-                      style: TextStyle(fontFamily: 'wdxl'),
-                    ),
-                    // hintText: 'Ня~ введите.. словечко, пожалуйста!',
-                  ),
+                _buildCustomTextField(wordController, 'Слово', 'Введите слово'),
+                const SizedBox(height: 10),
+                _buildCustomTextField(
+                  readingController,
+                  'Чтение',
+                  'Введите чтение',
                 ),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: readingController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    // labelText: 'Чтение',
-                    label: Text('Чтение', style: TextStyle(fontFamily: 'wdxl')),
-                    hint: Text(
-                      'Пожалуйста, введите чтенице~ (｡♥‿♥｡)',
-                      style: TextStyle(fontFamily: 'wdxl'),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: translationController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    // labelText: 'Перевод',
-                    label: Text(
-                      'Перевод',
-                      style: TextStyle(fontFamily: 'wdxl'),
-                    ),
-                    hint: Text(
-                      'Переводик, пожалуйста~ (づ｡◕‿‿◕｡)づ',
-                      style: TextStyle(fontFamily: 'wdxl'),
-                    ),
-                  ),
+                _buildCustomTextField(
+                  translationController,
+                  'Перевод',
+                  'Введите перевод',
                 ),
                 const SizedBox(height: 30),
                 SizedBox(
@@ -648,6 +580,36 @@ class _CreateEditCardScreenState extends State<CreateEditCardScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCustomTextField(
+    TextEditingController controller,
+    String label,
+    String hint,
+  ) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        label: Text(label, style: TextStyle(fontFamily: 'wdxl')),
+        hint: Text(hint, style: TextStyle(fontFamily: 'wdxl')),
+      ),
+    );
+  }
+
+  Widget _buildCustomRow(
+    String text,
+    void Function()? onPressed,
+    IconData icon,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(text, style: TextStyle(fontSize: 20, fontFamily: 'wdxl')),
+
+        IconButton(onPressed: onPressed, icon: Icon(icon)),
+      ],
     );
   }
 }

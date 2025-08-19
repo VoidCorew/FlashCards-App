@@ -1,5 +1,3 @@
-import 'package:card_learn_languages/providers/app_provider.dart';
-import 'package:card_learn_languages/providers/app_theme.dart';
 import 'package:card_learn_languages/providers/card_provider.dart';
 import 'package:card_learn_languages/screens/quiz/quiz_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +8,9 @@ class QuizSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final textTheme = Theme.of(context).textTheme;
-    final currentTheme = context.watch<AppProvider>();
     final cards = context.watch<CardProvider>().cards;
 
     return Scaffold(
-      // appBar: AppBar(title: const Text('Викторина')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
